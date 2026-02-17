@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentinel-X Packet Sniffer</title>
+    <!-- Socket.IO client - talks to Python server -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <style>
+        /* HACKER GREEN THEME */
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace; 
+            margin: 0; padding: 20px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #00ff00;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #packets {
+            background: #111;
+            border: 2px solid #00ff00;
+            height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            font-size: 13px;
+        }
+        .packet {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #00ff00;
+            background: rgba(0,255,0,0.05);
+        }
+        .packet:hover {
+            background: rgba(0,255,0,0.15);
+        }
+        .TCP { border-left-color: #0066ff; }
+        .UDP { border-left-color: #00ff88; }
+        .ICMP { border-left-color: #ff8800; }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-family: inherit;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- DASHBOARD UI -->
+    <div class="header">
+        <h1>🔥 SENTINEL-X v1.0 LIVE</h1>
+        <div>Packets: <span id="count">0</span> | 
+             Browsers: <span id="clients">1</span></div>
+        <button onclick="clearPackets()">🗑️ Clear</button>
+    </div>
+    
+    <!-- PACKET LIST -->
+    <div id="packets">Waiting for packets... 🚀</div>
+
+    <script>
+        // Connect to Python WebSocket server
+        const socket = io();
+        let total_packets = 0;
+        
+        // NEW PACKET from Python server
+        socket.on('packet', function(packet) {
+            total_packets++;                    // Count packets
+            document.getElementById('count').textContent = total_packets;
+            show_packet(packet);                // Add to screen
+        });
+        
+        // HISTORY when browser opens
+        socket.on('history', function(history) {
+            history.forEach(show_packet);       // Load old packets
+        });
+        
+        // DISPLAY ONE PACKET
+        function show_packet(packet) {
+            const container = document.getElementById('packets');
+            const div = document.createElement('div');
+            div.className = `packet ${packet.proto_name}`;
+            
+            // Build packet display text
+            const ports = packet.src_port ? 
+                `${packet.src_port}→${packet.dst_port}` : '—';
+            
+            div.innerHTML = `
+                <strong>${packet.time}</strong> 
+                ${packet.src_ip}:${packet.src_port || ''} 
+                <span style="color:#ffaa00">→</span> 
+                ${packet.dst_ip}:${packet.dst_port || ''} 
+                <span style="color:#00ff00">[${packet.proto_name}]</span> 
+                ${packet.size}B TTL:${packet.ttl}
+            `;
+            
+            // Add to TOP of list
+            container.insertBefore(div, container.firstChild);
+            
+            // Keep only 500 packets (performance)
+            if (container.children.length > 500) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        
+        // CLEAR BUTTON
+        function clearPackets() {
+            document.getElementById('packets').innerHTML = 'Cleared! 🚀';
+            total_packets = 0;
+            document.getElementById('count').textContent = '0';
+        }
+    </script>
+</body>
+</html>

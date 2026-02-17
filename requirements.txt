@@ -1,0 +1,5 @@
+# SIMPLE + SECURE - 4 packages only
+scapy==2.5.0              # Packet capture engine - EVERYTHING needs this
+flask==3.0.3              # Web server - serves dashboard
+flask-socketio==5.3.6     # Real-time updates - pushes packets to browser
+eventlet==0.36.1          # Async server - handles multiple connections
