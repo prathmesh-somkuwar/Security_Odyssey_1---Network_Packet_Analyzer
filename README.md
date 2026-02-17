@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<sub>Built by Prathamesh | Nagpur, India | Security Odyssey Series 🏛️</sub>
+<sub>Built by Prathamesh Somkuwar| Nagpur, India | Security Odyssey Series 🏛️</sub>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
@@ -117,5 +117,5 @@ For Educational and Ethical Practice only.
 ---
 
 <p align="center">
-<sub>⭐ Built by Prathamesh | Nagpur, India | <a href="https://www.linkedin.com/in/prathamesh-somkuwar-a15ab4248/">LinkedIn</a> | Security Odyssey Series 🏛️ ⭐</sub>
+<sub>⭐ Built by Prathamesh Somkuwar | Nagpur, India | <a href="https://www.linkedin.com/in/prathamesh-somkuwar-a15ab4248/">LinkedIn</a> | Security Odyssey Series 🏛️ ⭐</sub>
 </p>
